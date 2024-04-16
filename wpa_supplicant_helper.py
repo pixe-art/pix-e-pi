@@ -7,8 +7,6 @@ def scan_networks():
     lines = scan_string.split("\n")
     networks = []
 
-    print(scan_string)
-
     for i in range(len(lines)-1):
         n = lines[i+1].split("\t")
         if len(n) < 5:
@@ -33,3 +31,19 @@ def filter_networks(networks):
         deduped_networks.append((ssid, signal))
     
     return deduped_networks
+
+def generate_network_config(ssid, password=None):
+    config_string = f'network={{\n\tssid="{ssid}"\n\t'
+    if password == None:
+        config_string += "key_mgmt=NONE"
+    else:
+        config_string += f'psk="{password}"'
+    config_string += "\n}\n"
+    return config_string
+
+def write_config(config, config_path="/etc/wpa_supplicant/wpa_supplicant.conf"):
+    config_header = "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev\nupdate_config=1\ncountry=SE\n"
+    with open(config_path, "w+") as f:
+        f.write(config_header)
+        f.write(config)
+    

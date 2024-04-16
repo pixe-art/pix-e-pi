@@ -1,8 +1,10 @@
 import subprocess
 
+WIFI_INTERFACE = "wlan0"
+
 def scan_networks():
-    scan = subprocess.run(["wpa_cli", "-i", "wlan0", "scan"], capture_output=True, text=True) 
-    scan_result = subprocess.run(["wpa_cli", "-i", "wlan0", "scan_result"], capture_output=True, text=True)
+    scan = subprocess.run(["wpa_cli", "-i", WIFI_INTERFACE, "scan"], capture_output=True, text=True) 
+    scan_result = subprocess.run(["wpa_cli", "-i", WIFI_INTERFACE, "scan_result"], capture_output=True, text=True)
     scan_string = scan_result.stdout
     lines = scan_string.split("\n")
     networks = []
@@ -46,4 +48,7 @@ def write_config(config, config_path="/etc/wpa_supplicant/wpa_supplicant.conf"):
     with open(config_path, "w+") as f:
         f.write(config_header)
         f.write(config)
+    
+def reload_wpa_supplicant():
+    subprocess.run(["wpa_cli", "-i", WIFI_INTERFACE, "reconfigure"], capture_output=True, text=True)
     

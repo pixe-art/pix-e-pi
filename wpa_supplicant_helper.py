@@ -31,6 +31,8 @@ def filter_networks(networks):
     
     for ssid, signal in networks_dict.items():
         deduped_networks.append((ssid, signal))
+
+    deduped_networks.sort(key=lambda x: x[1], reverse=True)
     
     return deduped_networks
 
@@ -50,5 +52,7 @@ def write_config(config, config_path="/etc/wpa_supplicant/wpa_supplicant.conf"):
         f.write(config)
     
 def reload_wpa_supplicant():
+    subprocess.run(["ip", "addr", "flush", WIFI_INTERFACE], capture_output=True, text=True)
     subprocess.run(["wpa_cli", "-i", WIFI_INTERFACE, "reconfigure"], capture_output=True, text=True)
-    
+
+print(scan_networks())

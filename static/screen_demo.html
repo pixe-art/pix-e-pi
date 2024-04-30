@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    
+
+    <button id="red" class="button">red</button><br>
+    <button id="green" class="button">green</button><br>
+    <button id="blue" class="button">blue</button><br>
+    <button id="rgb" class="button">rgb</button><br>
+    <button id="image" class="button">image</button>
+
+    <script>
+        let buttons = document.getElementsByClassName("button");
+        for(let i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener('click', async _ => {
+            try {
+                
+                const response = await fetch('/'+(i+1), {
+                    method: 'post',
+                    body: {
+                        // Your body
+                    }
+                });
+                console.log('Completed!', response);
+            } catch (err) {
+                console.error(`Error: ${err}`);
+            }
+        });
+        }
+        
+        
+    </script>
+</body>
+
+</html>

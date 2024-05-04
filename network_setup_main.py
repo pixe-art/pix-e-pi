@@ -3,6 +3,7 @@ import hostapd_helper
 import time
 import subprocess
 import requests
+import atexit
 
 flask_running = False
 global flask_process
@@ -52,14 +53,21 @@ while True:
             hostapd_helper.disable_ap()
     else:
         print("not connected")
-        if not (hostapd_running or dnsmasq_running):
+        if not (hostapd_running and dnsmasq_running):
             print("ap not running, starting")
             hostapd_helper.enable_ap()
 
         if not flask_running:
             print("flask not running, starting")
-            flask_process = subprocess.Popen(['/home/pi/.local/share/virtualenvs/pix-e-HnRFVe-M/bin/python', 'network_setup_web.py'])
-    print("sleeping 30 seconds")
-    for i in range(30):
-        print(i)
-        time.sleep(1)
+            flask_process = subprocess.Popen(['/home/pi/.local/share/virtualenvs/pix-e-HnRFVe-M/bin/python', 'network_setup_web.py'], shell=True)
+    print("network setup sleeping 30 seconds")
+    time.sleep(30)
+    # for i in range(30):
+    #     print(i)
+    #     time.sleep(1)
+
+
+def cleanup():
+    flask_process.terminate()
+
+atexit.register(cleanup)

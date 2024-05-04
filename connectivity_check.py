@@ -8,7 +8,3 @@ def is_connected():
     except Exception as e:
         print("connectivity check failed:", e)
     return False
-
-print("a")
-is_connected()
-print("b")

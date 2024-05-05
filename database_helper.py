@@ -84,7 +84,7 @@ def validate_ownership(device_id):
     if device != device_id: # device has owner but owner does not device or owner has another device
         return False
 
-    return True
+    return True #device has owner and owner has device
 
 def generate_pairing_code(device_id):
     r = requests.get(f'{FIREBASE}/pixeModel/pairingCodes.json')
@@ -105,6 +105,7 @@ def generate_pairing_code(device_id):
     # set new paring code
     print(f'code: {code} device_id: {device_id}')
     r = requests.put(f'{FIREBASE}/pixeModel/pairingCodes/{code}.json', json=device_id)
+    return code
 
 if __name__ == "__main__":
     generate_pairing_code('pixedemodevice')

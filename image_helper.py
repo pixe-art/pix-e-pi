@@ -27,14 +27,6 @@ def update_local_image(device_id):
     except: 
         print("except: active_image_last_edited") 
         return 0, updated
-    try: active_image_owner = image_data['owner']
-    except: 
-        print("except: active_image_owner") 
-        return 0, updated
-
-
-    print(local_image)
-    print(active_image_id)
 
     if active_image_id != 0: # screen has an active image
         print('active_image_id is not 0')
@@ -57,3 +49,4 @@ def update_local_image(device_id):
 def get_image(image_id):
     with open(f'images/{image_id}', 'wb') as f: #download new image
         f.write(database_helper.get_image(image_id))
+
